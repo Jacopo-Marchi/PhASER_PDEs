@@ -6,7 +6,7 @@ Marchi, Khalek, George, Weitz, Chait: Stable coexistence and transport of lytic 
 
 It provides the code to run the model and generate the numerical data presented in the paper, and it allows reproduction of all figures of the manuscript from such pre-computed numerical data. 
 
-## Figures reproduction code
+## Dependencies installation and repository organization 
 
 #### Installation requirements
 
