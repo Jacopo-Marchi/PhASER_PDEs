@@ -65,10 +65,10 @@ print(params.shape)
 
 
 #F8 strain, Fig3
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 
+param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 
 
 # ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 Vc7 
-param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4  smaller plate, use this for fig 5 to merge colonies
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4  smaller plate, use this for fig 5 to merge colonies
 
 
 # F8 DIFFERENT AGAR FIG 4
