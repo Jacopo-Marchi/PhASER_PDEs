@@ -1,3 +1,15 @@
+
+
+"""
+Script Name: run_model.py
+Description: runs the PhASERs model, takes the input/output directory as inline parameter
+Author:      Jacopo Marchi
+Date:        11/18/2025
+Usage:       python run_model.py input_output_directory
+Notes:       Please make sure that your shell calls the correct python distribution. The code expects to find a file in the indicated directory, specifying 5 key parameters. The optimal usage involves using a bash wrapper (see model_batch_runs.sh in this repository) to create the necessary directory and cycle through the main parameters, but this can be done by hand and this script can be called directly through python. The comments indicate portions of the code that need to be uncommented to produce specific figures. Importantly, select the correct parameters dictionary which specifies the parameters not set in the bash wrapper. This script requires the core functions defined in the simulations_object.py script in the library folder.
+
+"""
+
 import os
 import sys
 from lib.simulation_objects import *
@@ -39,7 +51,7 @@ if not os.path.exists(dir_out_frames):
 param_file='{inp}/params.txt'.format(inp=dir_io)
 
 
-params = np.genfromtxt(param_file, dtype="|S10, |S10", names=['mf', 'Pc'])
+params = np.genfromtxt(param_file, dtype="|S10, |S10, |S10, |S10, |S10", names=['mf', 'Pc', 'gr_fac', 'phi', 'eta'])
 
 
 print(params)
@@ -48,44 +60,66 @@ print(params.shape)
 
 
 
-#PARAMETERS DICTIONARIES FOR THE MAIN SIMULATIONS PRESENTED IN THE PAPER, CORRESPONDING TO PARAMETERS LISTED IN THE SUPPLEMENTARY TEXT
+#PARAMETERS DICTIONARIES FOR THE MAIN SIMULATIONS PRESENTED IN THE PAPER, CORRESPONDING TO PARAMETERS LISTED IN THE SUPPLEMENTARY TEXT. UNCOMMENT THE DESIRED DICTIONARY. THE CORRESPONDING FIGURE/CONDITION IS SPECIFIED IN THE COMMENTS
 
 
 
-#F9, F10 FITTING BACTERIA PARAMETERS
 
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 2500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 2500000.0, "Nstages": 1}#  FINAL F10 NO PHAGE. GENERATES PROFILE CURVE IN FIG S12
+#F9 and F10 25% agar, Fig 2
 
-#F9 and F10 25% agar WITH PHAGE
-
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 4000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7  6.7mm/hr , F10 Fig 4C
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 4000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T4 Vc1e7 , 6.7 mm/hr F10 Fig 4C, and F9 Fig2
+param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2A
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 4000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T4 Vc1e7 , 6.7 mm/hr F10 Fig 4C, and F9 Fig2B
 
 
 
-#F8 strain, Fig3
-param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 
+#F8 strain
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, Fig3
 
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 Vc7 
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4  smaller plate, use this for fig 5 to merge colonies
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T4  , Fig3
+
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4  smaller plate, use this for Fig 5 to merge colonies
 
 
-# F8 DIFFERENT AGAR FIG 4
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 15000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 320000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 Vcinf small, 0.2, 8 mm/hr
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 2900000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 100000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 Vcinf small, 0.3, 3.5 mm/hr
+# F8 AND F10 STRAINS DIFFERENT AGAR FIG 4
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 15000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 320000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, 0.2 agar, 8 mm/hr
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 2900000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 100000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, 0.3 agar  3.5 mm/hr
 
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 15000000.0, "eps": 1e-06, "phi": 6e-08,  "D_B": 320000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 Vc7, 0.2, 8 mm/hr
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 2900000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 100000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 Vc7, 0.3, 3.5 mm/hr
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 15000000.0, "eps": 1e-06, "phi": 6e-08,  "D_B": 320000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 0.2 agar,  8 mm/hr
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 2900000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 100000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T4 0.3 agar,  3.5 mm/hr
+
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 4000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# F10 T7, 0.25 agar  6.7mm/hr , Fig 4C
+
+
+#Different N_stages, named L in the manuscript. Set N_stages to the desired number
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 600000.0, "Ly": 600000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 1} # F8 T7 
+
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 1} # F8 T4  
+
+
+
+
+#F8 nutrient is attractant IMPORTANT, UNCOMMENT THE RESCALING OF am AND ap BELOW. NOTE THE DIFFERENT MODEL STRING
+# ~ param_list={"model": "track_nutr", "eta": 5, "xi": 50000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 
+# ~ param_list={"model": "track_nutr", "eta": 10, "xi": 50000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7 
+# ~ param_list["am"]    =  param_list["am"] * param_list["k"]/param_list["k_attra"] # Rescale so that sensitifity range is on the relevant order of magnitude as the chemical dynamics
+# ~ param_list["ap"]    =  param_list["ap"] * param_list["k"]/param_list["k_attra"] # Rescale so that sensitifity range is on the relevant order of magnitude as the chemical dynamics
 
 
 
 
 # SET/OVERRIDE A FEW REMAINING PARAMETERS
 
-param_list["xi2"]    = xi2 = param_list['xi'] # Ensures bacteria have an equal sensitivity to both attractant. Change if this is not desired
+conv_LB=1. # # nutrients dilution in the initial LB preparation, 1 default
+# ~ conv_LB = 0.50 #
+
 param_list['mot_factor']=float(params['mf']) # motility factor for infected cells
 param_list['Pc'] =float(params['Pc']) # phage adsorption saturation. If negative, a linear profile is employed (always the case for phage T7)
+param_list['phi'] =float(params['phi']) # phage adsorption saturation. If negative, a linear profile is employed (always the case for phage T7)
+param_list['eta'] =float(params['eta']) # phage adsorption saturation. If negative, a linear profile is employed (always the case for phage T7)
+r_def = param_list['r'] # growth rate
+param_list['r'] =float(params['gr_fac'])*r_def  # growth multiplied by modulation factor. 1 for default
+param_list['eps'] =param_list['eps']/float(params['gr_fac'])  # yield multiplied by modulation factor. 1 for default. This assume that medium quality affects biomass conversion while chemicals uptake stays the same
+param_list["xi2"]    = xi2 = param_list['xi'] # Ensures bacteria have an equal sensitivity to both attractant. Change if this is not desired
 
 
 # DEFINE A FEW USEFUL VARIABLES
@@ -157,15 +191,14 @@ xx, yy = np.meshgrid(lindim, lindimy)
 
 
 
-A  = np.zeros(xx.shape) + 20. # attractant 
-# ~ A = np.zeros(xx.shape)  # attractant set this to 0 for strain F9
-A2 = np.zeros(xx.shape) + 20. # attractant
+# ~ A  = np.zeros(xx.shape) + 20.*conv_LB # attractant, IMPORTANT, UNCOMMENT FOR STRAINS F8 AND F10
+A = np.zeros(xx.shape)  # attractant, uncomment and set this to 0 for strain F9
+A2 = np.zeros(xx.shape) + 20.*conv_LB # attractant
 
 print (A.shape)
 
 
-R = np.zeros(xx.shape) + 3500 # resources
-# ~ R = np.zeros(xx.shape) + 2500 # resources 
+R = np.zeros(xx.shape) + 3500*conv_LB # resources
 Ei = np.zeros((Nstages, xx.shape[0], xx.shape[1]))  # infected cell at various stages
 
 
@@ -181,9 +214,8 @@ in_y_bacts= int((6000 -L/2.)/dx)*dx# initial position of bacteria, always micron
 
 in_radius_virs= 200
 in_virs=10**9. # initial phage, PFU/ml
-# ~ in_virs=0. # 
-# ~ in_virs=5*10**6. # 
-# ~ in_virs=10**13. # 
+# ~ in_virs=0. # NO PHAGE
+# ~ in_virs=5*10**6. # VARY TO TEST DUFFERENT INOCULI IN FIG 4
 
 in_x_virs= int((21000  -L/2.)/dx)*dx # initial position of virs, always microns 
 in_y_virs=  int((21000  -L/2.)/dx)*dx # initial position of virs, always microns
@@ -209,8 +241,8 @@ if model == 'twobacts':
 
     
 # to merge colonies in Fig 5, set to True
-mergefromscratch=True
-# ~ mergefromscratch=False
+# ~ mergefromscratch=True
+mergefromscratch=False
 
 if mergefromscratch:
     
@@ -269,8 +301,8 @@ if crushagainstwall:
 
 elapsed = 0.
 elapsed_print = -100.
-elapsed_check = -100.
-totalTime = 100
+elapsed_check = -100. # with negative values densities are checked at every iteration. Set higher to speed up code, but paying attention not to introduce numerical errors.
+totalTime = 200
 
 init_realtime=datetime.datetime.now()
 
@@ -480,22 +512,30 @@ while elapsed < totalTime:
         A2_new = newstate[5]
         S2_new = newstate[6]
         Ei2_new = newstate[7]
+        
+    elif model == 'track_nutr':
+        newstate = advance(dt, R,S,V,Ei)  #advance the state variables to the next step
+        
+        R_new = newstate[0]
+        S_new = newstate[1]
+        V_new = newstate[2]
+        Ei_new = newstate[3]
     
 
 # COUNT VARIABLES BELOW NEGATIVE THRESHOLDS, TO DETERMINE WHETHER TO LOWER TIME STEP     
-    c1 = 0 #check if there are any negative numbers in R
+    c1 = 0 
     c2 = 0 # obsolete
-    c3 = 0
-    c4 = 0
-    c5 = 0.  #check if there are any negative numbers in A
+    c3 = 0 
+    c4 = 0 # obsolete
+    c5 = 0.  
     
     if (elapsed - elapsed_check)>=checkfreq:
         
         c1 = np.count_nonzero(R_new   < -K/1000)  #check if there are any negative numbers in R
 
-        c3 = np.count_nonzero(V_new < -discr_thr/10)
+        c3 = np.count_nonzero(V_new < -discr_thr/10) #check if there are any negative numbers in V
         if model == 'attractant' or model == 'twobacts':
-            c5 = np.count_nonzero(A_new   < - 3*param_list["am"] ) + np.count_nonzero(A2_new   < -3*param_list["am"])  #
+            c5 = np.count_nonzero(A_new   < - 3*param_list["am"] ) + np.count_nonzero(A2_new   < -3*param_list["am"])  # #check if there are any negative numbers in A
         
         elapsed_check= elapsed
     
@@ -521,11 +561,11 @@ while elapsed < totalTime:
 
     
 
-    else: # IF NO VARIABLE GOES "TOO MUCH"" BELOW 0, RETAIN THE LAST STEP AND STORE THE OUTPUT
+    else: # IF NO VARIABLE GOES TOO FAR BELOW 0 (SEE ABOVE), RETAIN THE LAST STEP AND STORE THE OUTPUT
         
         checkfreq=0.0 #hours
         
-        # set negative densities to 0
+        # set negative densities to 0. The check above guatrrantees that the time step is adapted so that densities are never extrapolated to significantly negative values
         R_new[R_new < 0 ] = 0.
         Ei_new[Ei_new < 0. ] = 0.
         S_new[S_new < 0. ] = 0.
@@ -660,8 +700,8 @@ while elapsed < totalTime:
             ax0 = fig.add_subplot(grid[-1, 1])
             ax1 = fig.add_subplot(grid[-1, 0])
             
-            v1 = ax0.pcolormesh(xx/epsilon_plot,yy/epsilon_plot, V,norm=colors.LogNorm(vmin=discr_thr, vmax=1e11),shading='auto',cmap='Oranges', linewidth=0,rasterized=True)  ##plotting with log scale
-            v2 = ax1.pcolormesh(xx/epsilon_plot,yy/epsilon_plot, B, norm=colors.LogNorm(vmin=discr_thr, vmax=1e10),shading='auto',cmap = 'PuBu', linewidth=0,rasterized=True) 
+            v1 = ax0.pcolormesh(xx/epsilon_plot,yy/epsilon_plot, np.where(V>discr_thr, V,0) ,norm=colors.LogNorm(vmin=discr_thr, vmax=1e11),shading='auto',cmap='Oranges', linewidth=0,rasterized=True)  ##plotting with log scale
+            v2 = ax1.pcolormesh(xx/epsilon_plot,yy/epsilon_plot, np.where(B>discr_thr, B,0), norm=colors.LogNorm(vmin=discr_thr, vmax=1e10),shading='auto',cmap = 'PuBu', linewidth=0,rasterized=True) 
             
             ax0.set_xlabel(r'x (mm)')
             ax0.set_ylabel(r'y (mm)')
