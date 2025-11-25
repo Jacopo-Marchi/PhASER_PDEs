@@ -130,7 +130,7 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         return res
         
         
-    def chemotaxis_operator_Ping(B_or, R_or,xi_, am_=am, ap_=ap):
+    def chemotaxis_operator_logWeber(B_or, R_or,xi_, am_=am, ap_=ap):
         
         B_ch = B_or # 
         R_ch = R_or
@@ -175,12 +175,12 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         
         xieff=xi 
         dbact= D_B 
-        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_Ping(S, A, xieff)- chemotaxis_operator_Ping(S, A2, xieff)
+        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_logWeber(S, A, xieff)- chemotaxis_operator_logWeber(S, A2, xieff)
         D_v_eff=D_v
 
         dVdt= phage_dyn(discrhillV*V,  phi*discrhillV*FV, betaR*Nstages*etaR*Ei[-1,:,:], B_tot*FB) + diff(D_v_eff,V)
 
-        dEidt= infection_stages_dyn(Ei, S, Nstages*etaR, phi*discrhillV*FV*FS)  + diff(dbact,Ei) - chemotaxis_operator_Ping(m_i*Ei, A, xi) - chemotaxis_operator_Ping(m_i*Ei, A2, xi2) 
+        dEidt= infection_stages_dyn(Ei, S, Nstages*etaR, phi*discrhillV*FV*FS)  + diff(dbact,Ei) - chemotaxis_operator_logWeber(m_i*Ei, A, xi) - chemotaxis_operator_logWeber(m_i*Ei, A2, xi2) 
         
         dAdt= attr_dyn(A,B_tot,R, k_attr, mu_1, mu_2) + diff(D_A,A) #+ mu_2* Nstages*etaR*Ei[-1,:,:]*discrhillE[-1,:,:]*  A /(A + k_attr) /2.
         dA2dt= attr_dyn(A2,B_tot,R, k_attra, mu_1a, mu_2a) + diff(D_A2,A2) #+ mu_2a* Nstages*etaR*Ei[-1,:,:]*discrhillE[-1,:,:]/5.
@@ -194,6 +194,45 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
 
         
         return [R_new,S_new, V_new,Ei_new, A_new, A2_new]
+        
+    
+    def advance_one_step_track_nutr(dt, R,S,V,Ei):
+            
+        etaR = eta_ofR(R)
+        betaR = beta_ofR(R)
+        discrhillV=discr_mask(V)
+        
+        B_tot = S +  np.sum(Ei, axis =0 ) # total number of bacteria
+        
+        
+        
+        Vc= pars["Pc"] # saturation threshold for phage binding 
+        
+        FV=V/(1+ V/Vc)
+        if Vc <0:
+            FV=V
+            
+        FS=1.
+        FB=1.
+        
+                
+        dRdt= res_dyn(R,B_tot) + diff(D_R,R)# + eps* Nstages*etaR*Ei[-1,:,:]*discrhillE[-1,:,:]/5.
+        
+        dbact= D_B 
+        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_logWeber(S, R, xi)
+        D_v_eff=D_v
+
+        dVdt= phage_dyn(discrhillV*V,  phi*discrhillV*FV, betaR*Nstages*etaR*Ei[-1,:,:], B_tot*FB) + diff(D_v_eff,V)
+
+        dEidt= infection_stages_dyn(Ei, S, Nstages*etaR, phi*discrhillV*FV*FS)  + diff(dbact,Ei) - chemotaxis_operator_logWeber(m_i*Ei, R, xi) 
+        
+        R_new= R+ dt*dRdt 
+        S_new= S+ dt*dSdt
+        V_new= V+ dt*dVdt
+        Ei_new= Ei+ dt*dEidt
+
+        
+        return [R_new,S_new, V_new,Ei_new]
         
 
         
@@ -251,8 +290,8 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         
         xieff=xi 
         dbact= D_B 
-        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_Ping(S, A, xieff)- chemotaxis_operator_Ping(S, A2, xieff)
-        dS2dt= bact_dyn(S2, R, phi2*discrhillV*FV, r2, k2)   + diff(D_B2,S2) - chemotaxis_operator_Ping(S2, A, xi_bact2, am2, ap2)- chemotaxis_operator_Ping(S2, A2, xi_bact2, am2, ap2)
+        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_logWeber(S, A, xieff)- chemotaxis_operator_logWeber(S, A2, xieff)
+        dS2dt= bact_dyn(S2, R, phi2*discrhillV*FV, r2, k2)   + diff(D_B2,S2) - chemotaxis_operator_logWeber(S2, A, xi_bact2, am2, ap2)- chemotaxis_operator_logWeber(S2, A2, xi_bact2, am2, ap2)
         
        
         D_v_eff=D_v
@@ -261,9 +300,9 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
 
 
         # ~ print (np.max(Ei),np.max(Ei[-1,:,:]), np.max(etaR),np.max(phi*discrhillV*FV*FS), phi)
-        dEidt= infection_stages_dyn(Ei, S, Nstages*etaR, phi*discrhillV*FV*FS)  + diff(dbact,Ei) - chemotaxis_operator_Ping(m_i*Ei, A, xi) - chemotaxis_operator_Ping(m_i*Ei, A2, xi) 
+        dEidt= infection_stages_dyn(Ei, S, Nstages*etaR, phi*discrhillV*FV*FS)  + diff(dbact,Ei) - chemotaxis_operator_logWeber(m_i*Ei, A, xi) - chemotaxis_operator_logWeber(m_i*Ei, A2, xi) 
         
-        dEi2dt= infection_stages_dyn(Ei2, S2, Nstages2*etaR2, phi2*discrhillV*FV*FS)  + diff(D_B2,Ei2) - chemotaxis_operator_Ping(m_i2*Ei2, A, xi_bact2, am2, ap2) - chemotaxis_operator_Ping(m_i2*Ei2, A2, xi_bact2, am2, ap2) 
+        dEi2dt= infection_stages_dyn(Ei2, S2, Nstages2*etaR2, phi2*discrhillV*FV*FS)  + diff(D_B2,Ei2) - chemotaxis_operator_logWeber(m_i2*Ei2, A, xi_bact2, am2, ap2) - chemotaxis_operator_logWeber(m_i2*Ei2, A2, xi_bact2, am2, ap2) 
         
         dAdt= attr_dyn(A,S +  np.sum(Ei, axis =0 ), R, k_attr, mu_1, mu_2) + attr_dyn(A,np.sum(Ei2, axis =0 ) + S2,R, k_attr_bact2, mu_1_bact2, mu_2_bact2, r2, k2) + diff(D_A,A) 
         dA2dt= attr_dyn(A2,S +  np.sum(Ei, axis =0),R, k_attra, mu_1a, mu_2a)+ attr_dyn(A2,np.sum(Ei2, axis =0 ) + S2,R, k_attra_bact2, mu_1a_bact2, mu_2a_bact2, r2, k2) + diff(D_A2,A2) 
@@ -282,7 +321,7 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         return [R_new,S_new, V_new,Ei_new, A_new, A2_new, S2_new, Ei2_new]
         
         
-    def return_derivatives_and_fluxes( R,S,V,E,A, A2): # assuming Ei is uniform
+    def return_derivatives_and_fluxes( R,S,V,E,A, A2): # for plotting purposes only.  Assumes Ei is uniform
         
         etaR = eta_ofR(R)
         betaR = beta_ofR(R)
@@ -303,7 +342,7 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         
         xieff=xi 
         dbact= D_B 
-        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_Ping(S, A, xieff)- chemotaxis_operator_Ping(S, A2, xieff)
+        dSdt= bact_dyn(S, R,  phi*discrhillV*FV*FS)   + diff(dbact,S) - chemotaxis_operator_logWeber(S, A, xieff)- chemotaxis_operator_logWeber(S, A2, xieff)
         
         D_v_eff=D_v
 
@@ -312,55 +351,21 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         dAdt= attr_dyn(A,B_tot,R, k_attr, mu_1, mu_2) + diff(D_A,A) #+ mu_2* Nstages*etaR*Ei[-1,:,:]*discrhillE[-1,:,:]*  A /(A + k_attr) /2.
         dA2dt= attr_dyn(A2,B_tot,R, k_attra, mu_1a, mu_2a) + diff(D_A2,A2) #+ mu_2a* Nstages*etaR*Ei[-1,:,:]*discrhillE[-1,:,:]/5.
         
-        return [dRdt,dSdt, dVdt, dAdt, dA2dt, chemotaxis_operator_Ping(m_i*B_tot, A2, xi2), diff(dbact,B_tot), r * S * R/(R + k), phi*discrhillV*FV*FS*S, etaR*E,  np.log((1+A2/am)/(1+A2/ap))] # returns derivatives, plus chemotaxis 2, diffusion rate, bacteria growth rate, phage infection rate, cell lysis rate, attractant 2 sensing field
+        return [dRdt,dSdt, dVdt, dAdt, dA2dt, chemotaxis_operator_logWeber(m_i*B_tot, A2, xi2), diff(dbact,B_tot), r * S * R/(R + k), phi*discrhillV*FV*FS*S, etaR*E,  np.log((1+A2/am)/(1+A2/ap))] # returns derivatives, plus chemotaxis 2, diffusion rate, bacteria growth rate, phage infection rate, cell lysis rate, attractant 2 sensing field
         
         
     if model == 'attractant':
         return advance_one_step_attractant
     elif model == 'twobacts':
         return advance_one_step_attractant_twobacts
+    elif model == 'track_nutr':
+        return advance_one_step_track_nutr
     elif model == 'derivatives':
         return return_derivatives_and_fluxes
     else:
         print("model not implemented")
         sys.exit()
 
-
-def bact_ext_prep(pars):
-    
-
-    Nstages =pars['Nstages'] # infection stages   
-    Ncols = int(pars['L']/pars['Delta_x']) # number of grid rows and cols
-    Nsites=int(Ncols**2)    
-    
-    # extinction on the whole grid, then stop the integration. I need to implement a "local extinction" rule
-    def bact_ext(t, z): return np.sum(z[Nsites:2*Nsites]) + np.sum(z[3*Nsites:(Nstages+3)*Nsites])  - 1e4 # threshold at 1e4. if Delta_x 100 um, area is 1e4 um**2, vs 1e8 um**2 units (cm**2)
-    
-    return bact_ext
-
-
-
-    
-def bact_ext_inc(pars):
-    Nstages =pars['Nstages'] # infection stages   
-    def bact_ext(t, z): 
-        R, S, V  = z[:3]
-        Ei= z[3:3+Nstages]
-        B_tot = S +  np.sum(Ei, axis =0 ) # total number of bacteria
-        return B_tot - 1. # threshold at 10 /mL. If the lung volume is 100 ul that corresponds to 1 cell. Perhaps it's 400 uL
-
-    return bact_ext
-    
-    
-    
-def bact_ext_lambda(t, z, pars):
-    Nstages =pars['Nstages'] # infection stages           
-            
-    R, S, V  = z[:3]
-    Ei= z[3:3+Nstages]
-    B_tot = S +  np.sum(Ei, axis =0 ) # total number of bacteria
-    
-    return B_tot - 1. # threshold at 10 /mL. If the lung volume is 100 ul that corresponds to 1 cell. Perhaps it's 400 uL
 
 
 def coarsen2D(original_array, c):
@@ -370,7 +375,7 @@ def coarsen2D(original_array, c):
   
 
 def gridint(x, y, z, xi, yi):
-    "Convert 3 column data to matplotlib grid"
+    "Convert 3 column data to grid"
     
     print((min(xi), min(yi)))
     print((max(xi), max(yi), max(y)))
