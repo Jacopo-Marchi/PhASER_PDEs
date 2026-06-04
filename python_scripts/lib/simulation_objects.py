@@ -2,6 +2,7 @@ import numpy as np
 import gc
 from scipy.interpolate import interpn
 from scipy import ndimage
+import sys
 
 import pandas as pd
 from scipy.interpolate import make_interp_spline
@@ -30,8 +31,15 @@ def div_fgradg(f,g): # generalize for f and g with dim 3
     
     
 
-    
+# from Choua and Bonachela, the units are converted in the euler function
+def eclipse(mu_norm, E_inf, E0, alpha_E):
+    """E(mu) = E_inf + E0 * exp(-alpha_E * mu/mu_max)  [minutes]"""
+    return E_inf + E0 * np.exp(-alpha_E * mu_norm)
 
+def maturation(mu_norm, M_inf, M0, alpha_M):
+    """M(mu) = M_inf / (1 + exp(-alpha_M*(mu/mu_max - M0)))  [virions/min]"""
+    return M_inf / (1.0 + np.exp(-alpha_M * (mu_norm - M0)))
+    
     
 def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives of a specified model
     
@@ -73,6 +81,9 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
     xi2  = pars["xi2"] # =xi 
     
     m_i = pars["mot_factor"]
+    
+        
+    Vc= pars["Pc"] # saturation threshold for phage binding 
 
     # chemotaxis parameters
     Delta_x = pars['Delta_x']
@@ -83,13 +94,54 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
     
     discr_thr= (10.**8.)/(Delta_x * Delta_x *0.5) # discreteness treshold for phage. The conversion factor transforms microns to mL
     
-    def eta_ofR(R, eta_=eta, k_=k):
+    def eta_ofR(R, eta_=eta, k_=k, Vc_=Vc):
         # ~ return eta/3.
-        return eta_*(R/(R+1*k_) ) #+ 0.3
+        return eta_*(R/(R+1*k_) ) # DEFAULT
+        
+        # ~ # Plastic virus from Choua, Bonachela, uncomment for nonlinear function
+        # ~ FRAC_SHORT   = 3500 / (3500 + k_)   # max mu/mu_max
+        # ~ mu_n   = FRAC_SHORT
+        
+        # ~ # T4 parameters for eclipse function (Chou and Bonachela, inferred from Rabinovitch 1999)
+        # ~ E_inf=18.26
+        # ~ E0=94.18
+        # ~ alpha_E=7.76
+        # ~ if Vc_ <0: # T7 (Chou and Bonachela, inferred from You 2002)
+            # ~ E_inf=15.33
+            # ~ E0=82.71
+            # ~ alpha_E=5.9
+        
+        # ~ E_star = eclipse(mu_n, E_inf, E0, alpha_E)
+        # ~ L_model = 60.0 / (eta_* FRAC_SHORT)          # min
+        # ~ w_norm = 1.0 / (L_model - E_star) # min^-1
+        # ~ E_curve   = eclipse((R/(R+1*k_) ), E_inf, E0, alpha_E)
+        # ~ L_curve   = 1.0 / w_norm + E_curve   # [min]
+        # ~ eta_curve = 60.0 / L_curve    # [h^-1]
+        # ~ return eta_curve
 
-    def beta_ofR(R, lambd_=lambd, k_=k):
-        return 1 + lambd_*(R/(R+1*k_) )
-    
+    def beta_ofR(R, lambd_=lambd, k_=k, Vc_=Vc):
+        return 1 + lambd_*(R/(R+1*k_) ) # DEFAULT
+                    
+        # ~ # Plastic virus from Choua, Bonachela, uncomment for nonlinear function
+        # ~ FRAC_SHORT   = 3500 / (3500 + k_)   # max mu/mu_max, based on initial resources
+        # ~ mu_n   = FRAC_SHORT
+        
+        # ~ # T4 parameters for maturation function (Chou and Bonachela, inferred from Rabinovitch 1999)
+        # ~ M_inf=47.32
+        # ~ M0=0.65
+        # ~ alpha_M=12.03
+        # ~ if Vc_ <0: # T7 (Chou and Bonachela, inferred from You 2002)
+            # ~ M_inf=6.7
+            # ~ M0=0.64
+            # ~ alpha_M=9.70
+            
+        # ~ M_star = maturation(mu_n, M_inf, M0,  alpha_M)
+        # ~ B_model = 1 + lambd_* FRAC_SHORT
+        # ~ w_norm   = M_star / B_model   
+        # ~ M_curve   = maturation((R/(R+1*k_) ), M_inf, M0,  alpha_M)
+        # ~ B_curve   = M_curve / w_norm
+        # ~ return B_curve
+            
     def discr_mask(same):
         return same**(10.)/(same**(10.) + discr_thr**(10.)  )
 
@@ -161,8 +213,6 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         
         
         
-        Vc= pars["Pc"] # saturation threshold for phage binding 
-        
         FV=V/(1+ V/Vc)
         if Vc <0:
             FV=V
@@ -205,8 +255,6 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         B_tot = S +  np.sum(Ei, axis =0 ) # total number of bacteria
         
         
-        
-        Vc= pars["Pc"] # saturation threshold for phage binding 
         
         FV=V/(1+ V/Vc)
         if Vc <0:
@@ -277,7 +325,6 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         B_tot = S +  np.sum(Ei, axis =0 ) +  np.sum(Ei2, axis =0 ) + S2 # total number of bacteria
 
         
-        Vc= pars["Pc"] # saturation threshold for phage binding 
         
         FV=V/(1+ V/Vc)
         if Vc <0:
@@ -329,7 +376,6 @@ def derivatives_euler(pars, model, parsbact2=None): # implements the derivatives
         
         
         B_tot = S +  E   # total number of bacteria
-        Vc= pars["Pc"] # saturation threshold for phage binding 
         
         FV=V/(1+ V/Vc)
         if Vc <0:
