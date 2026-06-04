@@ -67,13 +67,14 @@ print(params.shape)
 
 #F9 and F10 25% agar, Fig 2
 
-param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2A
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2A
 # ~ param_list={"model": "attractant", "eta": 2, "xi": 4000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T4 Vc1e7 , 6.7 mm/hr F10 Fig 4C, and F9 Fig2B
 
 
 
 #F8 strain
 # ~ param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, Fig3
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 6000000.0, "eps": 1e-06, "phi": 2e-09, "D_B": 180000.0, "lambda": 50.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T4, SI linear adsorp (Pc -1)
 
 # ~ param_list={"model": "attractant", "eta": 2, "xi": 6000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T4  , Fig3
 
@@ -81,10 +82,10 @@ param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi
 
 
 # F8 AND F10 STRAINS DIFFERENT AGAR FIG 4
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 15000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 320000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, 0.2 agar, 8 mm/hr
+# ~ param_list={"model": "attractant", "eta": 5, "xi": 15200000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 320000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, 0.2 agar, 8.3 mm/hr
 # ~ param_list={"model": "attractant", "eta": 5, "xi": 2900000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 100000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 120000.0, "Ly": 120000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T7, 0.3 agar  3.5 mm/hr
 
-# ~ param_list={"model": "attractant", "eta": 2, "xi": 15000000.0, "eps": 1e-06, "phi": 6e-08,  "D_B": 320000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 0.2 agar,  8 mm/hr
+# ~ param_list={"model": "attractant", "eta": 2, "xi": 15200000.0, "eps": 1e-06, "phi": 6e-08,  "D_B": 320000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # T4 0.2 agar,  8.3 mm/hr
 # ~ param_list={"model": "attractant", "eta": 2, "xi": 2900000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 100000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.3, "k": 7000.0, "omega": 0.01, "am": 0.3, "ap": 10, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 2e-08, "k_attr": 3.2, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 10, "D_A2": 3000000.0, "xi2": 6000000.0, "Nstages": 10} # F8 T4 0.3 agar,  3.5 mm/hr
 
 # ~ param_list={"model": "attractant", "eta": 5, "xi": 4000000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 180000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# F10 T7, 0.25 agar  6.7mm/hr , Fig 4C
@@ -215,7 +216,7 @@ in_y_bacts= int((6000 -L/2.)/dx)*dx# initial position of bacteria, always micron
 in_radius_virs= 200
 in_virs=10**9. # initial phage, PFU/ml
 # ~ in_virs=0. # NO PHAGE
-# ~ in_virs=5*10**6. # VARY TO TEST DUFFERENT INOCULI IN FIG 4
+# ~ in_virs=5*10**5. # VARY TO TEST DUFFERENT INOCULI IN FIG 4
 
 in_x_virs= int((21000  -L/2.)/dx)*dx # initial position of virs, always microns 
 in_y_virs=  int((21000  -L/2.)/dx)*dx # initial position of virs, always microns
@@ -745,7 +746,7 @@ while elapsed < totalTime:
 
 prefix = "store"
 names = {0: "_timeStep", 1: "_elapsed", 2: "_totsteps", 3: "_neg_R", 4: "_neg_P", 5: "_neg_S", 6: "_neg_Ei", 7: "_neg_A"}
-arr = {0: store_timetep, 1: store_elapsed, 2: store_steps_all, 3: store_neg_R, 4: store_neg_P, 5: store_neg_S, 6: store_neg_E1, 7: store_neg_A}
+arr = {0: store_timeStep, 1: store_elapsed, 2: store_steps_all, 3: store_neg_R, 4: store_neg_P, 5: store_neg_S, 6: store_neg_E1, 7: store_neg_A}
 
 for i in range(8):
     np.savetxt(dir_out_tot +"/" + prefix + names[i] +".txt", arr[i])
