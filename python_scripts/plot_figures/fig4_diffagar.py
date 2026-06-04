@@ -64,7 +64,7 @@ def plot_timelapse_intensity(xs,ys,zs,ax,idx_lapse,rightside=None,leftside=None,
 
 fontprops = fm.FontProperties(size=28)
 
-dir_fig='../../sims_for_fig4' # directory with input files
+dir_fig='../../sims_for_fig4_new' # directory with input files
 
 
 df = pd.read_excel('{inp}/../growth_data/Scanner_OD.xlsx'.format(inp=dir_fig), skiprows=1, usecols='A,B',  header = None,  engine='openpyxl', sheet_name="CFU Calibration")
@@ -83,7 +83,9 @@ f = make_interp_spline(pxtoCFUs[:,1], pxtoCFUs[:,0], k=3)
 ############ PLOT FRAMES
 
 dirstrings=['{inp}/F8_t4_Vc1e7_agar0d2','{inp}/F8_t7_Vcinf_agar0d2','{inp}/F8_t4_Vc1e7_agar0d3','{inp}/F8_t7_Vcinf_agar0d3']
+# ~ dirstrings=['{inp}/t4_F8_xi152e5_DB_32e4','{inp}/t7_F8_xi152e5_DB_32e4','{inp}/t4_F8_xi147e5_DB_32e4','{inp}/t7_F8_xi147e5_DB_32e4']
 t_ints=[38,34,64,58]
+# ~ t_ints=[20,20,20,20]
 
     
 for idir, dirstr in enumerate(dirstrings):
@@ -193,104 +195,87 @@ for idir, dirstr in enumerate(dirstrings):
     t_estspeedm2=[tm2-2 for tm2 in t_estspeed]
     t_int=t_ints[idir]
     speedest=0
-    
+    wavespeeds=np.zeros_like(times)
+
 
     
     
     for it, t in enumerate(times):
         
-        if int(t) == t_int or it == 0 or int(t) in t_estspeed + t_estspeedm2:
+        # ~ if int(t) == t_int or it == 0 or int(t) in t_estspeed + t_estspeedm2:
+
+        print (t_int, int(t))
+        if savedat:
+            file_in_frames = "{inp}/experiment_state_time_{t}.dat".format(inp=dir_in_frames, t=t)
+            # ~ filename, _ = os.path.splitext(file_in_frames)
+            # ~ time=os.path.basename(filename).split('_')[-1]
+            # ~ time=int(float(time))
+            data_space = np.loadtxt(file_in_frames)
+        else:
+            file_in_frames = "{inp}/experiment_state_time_{t}.npz".format(inp=dir_in_frames, t=t)
+            with np.load(file_in_frames) as data:
+                 data_space = data['arr_0']
+     
+        print(t)
     
-            print (t_int, int(t))
-            if savedat:
-                file_in_frames = "{inp}/experiment_state_time_{t}.dat".format(inp=dir_in_frames, t=t)
-                # ~ filename, _ = os.path.splitext(file_in_frames)
-                # ~ time=os.path.basename(filename).split('_')[-1]
-                # ~ time=int(float(time))
-                data_space = np.loadtxt(file_in_frames)
-            else:
-                file_in_frames = "{inp}/experiment_state_time_{t}.npz".format(inp=dir_in_frames, t=t)
-                with np.load(file_in_frames) as data:
-                     data_space = data['arr_0']
-         
-            print(t)
+    
+    
+    
+        x       = data_space[:,0]
+        print (x)
+        print (x.shape)
+        y       = data_space[:,1]
+    
+        S   = data_space[:,3]
+        E   = data_space[:,4]
+        V = data_space[:,5]
+        R=data_space[:,2]
+        A=data_space[:,6]
+        A2=data_space[:,7]
         
-        
-        
-        
-            x       = data_space[:,0]
-            print (x)
-            print (x.shape)
-            y       = data_space[:,1]
-        
-            S   = data_space[:,3]
-            E   = data_space[:,4]
-            V = data_space[:,5]
-            R=data_space[:,2]
-            A=data_space[:,6]
-            A2=data_space[:,7]
+    
+        B_tot = S+E
+        BR = np.zeros(x.shape)  # 
+    
+        if model == 'resistance' and t>0:
+            BR=data_space[:,8]
             
+            B_tot = B_tot + BR    
+    
+        xnew = B_tot
+        intensities = f(xnew)
+        intensities = np.array(intensities).astype(float)  
         
-            B_tot = S+E
-            BR = np.zeros(x.shape)  # 
+        print(intensities)
+        print(intensities.dtype)
         
-            if model == 'resistance' and t>0:
-                BR=data_space[:,8]
-                
-                B_tot = B_tot + BR    
         
-            xnew = B_tot
-            intensities = f(xnew)
-            intensities = np.array(intensities).astype(float)  
-            
-            print(intensities)
-            print(intensities.dtype)
-            
-            
-            # ~ xx = np.reshape(x, (Ncols, Ncols))/1000.
-            xx = np.reshape(x, (Nrows, Ncols))/1000.
-            print (xx.shape)
-            # ~ sys.exit
-            yy = np.reshape(y, xx.shape)/1000.
-            R = np.reshape(R, xx.shape)
-            S = np.reshape(S, xx.shape)
-            E = np.reshape(E, xx.shape)
-            V = np.reshape(V, xx.shape)
-            A = np.reshape(A, xx.shape)
-            A2 = np.reshape(A2, xx.shape)
+        # ~ xx = np.reshape(x, (Ncols, Ncols))/1000.
+        xx = np.reshape(x, (Nrows, Ncols))/1000.
+        print (xx.shape)
+        # ~ sys.exit
+        yy = np.reshape(y, xx.shape)/1000.
+        R = np.reshape(R, xx.shape)
+        S = np.reshape(S, xx.shape)
+        E = np.reshape(E, xx.shape)
+        V = np.reshape(V, xx.shape)
+        A = np.reshape(A, xx.shape)
+        A2 = np.reshape(A2, xx.shape)
+        BR = np.reshape(BR, xx.shape)
+        B_tot = np.reshape(B_tot, xx.shape)
+    
+        intensities = np.reshape(intensities, xx.shape)
+    
+        B_tot = S+E
+        BR = np.zeros(xx.shape)  # 
+    
+        if model == 'resistance' and t>0:
+            BR=data_space[:,8]
             BR = np.reshape(BR, xx.shape)
-            B_tot = np.reshape(B_tot, xx.shape)
-        
-            intensities = np.reshape(intensities, xx.shape)
-        
-            B_tot = S+E
-            BR = np.zeros(xx.shape)  # 
-        
-            if model == 'resistance' and t>0:
-                BR=data_space[:,8]
-                BR = np.reshape(BR, xx.shape)
-                
-                B_tot = B_tot + BR
-                
-            derivs_plots = derivatives_euler(pars, 'derivatives')
             
-            newstate = derivs_plots(R,S,V,E, A,A2)  #solving the equation
+            B_tot = B_tot + BR
             
-            dRdt = newstate[0]
-            dSdt = newstate[1]
-            dVdt = newstate[2]
-            dAdt = newstate[3]
-            dA2dt = newstate[4]
-            chemo_str = - newstate[5]
-            diff_str = newstate[6]
-            gr_str = newstate[7]
-            inf_str = newstate[8]
-            lys_str = newstate[9]
-            attr_sense_field = newstate[10]
-            
-            grad_sensing=np.gradient(attr_sense_field, pars['Delta_x'])
-            chemo_flux=B_tot*grad_sensing
-        
+    
                  
         if it==0:
             # ~ np.unravel_index(np.argmax(a, axis=None), a.shape)
@@ -329,7 +314,7 @@ for idir, dirstr in enumerate(dirstrings):
             
             
             wavepos=xlin[np.argmax(wave[id_first_bacts,id_first_bacts_x:])]
-            frontpos=xlin[np.argmax(B_tot[id_first_bacts,id_first_bacts_x:]<1e8)]
+            frontpos=xlin[np.argmax(B_tot[id_first_bacts,id_first_bacts_x:]<1e7)]
 
             
             print(wavepos)
@@ -349,6 +334,8 @@ for idir, dirstr in enumerate(dirstrings):
                 speedest=wavespeed
             
             
+            if wavespeed>0:
+                wavespeeds[it]=wavespeed
         
         
         bactprec=B_tot
@@ -398,8 +385,39 @@ for idir, dirstr in enumerate(dirstrings):
         
         
                 
- 
+    
+    
+    fig = plt.figure(figsize=(4,4))
+    grid = gridspec.GridSpec(1, 1, left=0.15, right=0.7, top=0.91, bottom=0.22, wspace=0.4, hspace=0.35)
+    labeled_axes = []
+        
+    ax = plt.Subplot(fig, grid[0, 0])
+    fig.add_subplot(ax)
+    labeled_axes.append(ax)
+    
+    ax.plot(times, wavespeeds , linestyle='-', color='r', label='R')
+    
+    ax.set_xlabel('time (h)')
+    ax.set_ylabel('wave speed')
+    ax.xaxis.labelpad = axis_labelpad
+    ax.yaxis.labelpad = axis_labelpad
+    ax.legend(frameon=False, ncol=1, columnspacing=0.5, handletextpad=0.2,
+        loc='upper right', bbox_to_anchor=(1.5, 1.18))
+    
+    mpsetup.despine(ax) 
+        
+    out_file='{out}/wavespeed.pdf'.format(out=dir_out_plots_tot)
+    fig.savefig(out_file) 
     
  
+        
+    data_fin = np.array([times, wavespeeds ])
+     
+    file_out='{inp}/wavespeeds.txt'.format(inp=dir_out_plots_tot) # saves speeds, the reference value is taken at 22 hours
     
- 
+    with open(file_out,'w') as f_handle:
+        np.savetxt(f_handle, data_fin.T, fmt='%40.15f',  header="x \t wave speed")
+        f_handle.write("\n")
+        
+     
+    
