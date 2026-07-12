@@ -67,7 +67,7 @@ print(params.shape)
 
 #F9 and F10 25% agar, Fig 2
 
-# ~ param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2A
+param_list={"model": "attractant", "eta": 5, "xi": 5500000.0, "eps": 1e-06, "phi": 2e-08, "D_B": 270000.0, "lambda": 70.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T7   F9 Fig 2A
 # ~ param_list={"model": "attractant", "eta": 2, "xi": 4000000.0, "eps": 1e-06, "phi": 6e-08, "D_B": 180000.0, "lambda": 40.0, "D_v": 10000.0, "r": 1.6, "k": 5000.0, "omega": 0.01, "am": 0.3, "ap": 100, "D_R": 3000000.0, "Delta_x": 100.0, "Delta_B": 1.0, "n": 5, "L": 200000.0, "Ly": 200000.0, "mot_factor": 1.0, "mu_1": 0.0, "mu_2": 3e-08, "k_attr": 1.5, "D_A": 3000000.0, "mu_1a": 0.0, "mu_2a": 1.4e-07, "k_attra": 3, "D_A2": 3000000.0, "xi2": 4000000.0, "Nstages": 10}# T4 Vc1e7 , 6.7 mm/hr F10 Fig 4C, and F9 Fig2B
 
 
